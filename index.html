@@ -1,11 +1,462 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Site da CIA</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Apk TV Streaming - Área do cliente e painel do desenvolvedor para download de aplicativos." />
+  <title>Apk TV Streaming</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #475569;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --dark: #0f172a;
+      --dark-hover: #1e293b;
+      --danger: #dc2626;
+      --danger-hover: #b91c1c;
+      --border: #cbd5e1;
+      --ok: #15803d;
+      --shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .topo {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .topo h1 {
+      font-size: 32px;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .topo p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .grid-login {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .painel {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .painel h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .painel p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    input {
+      width: 100%;
+      padding: 11px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .botao {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      margin-top: 12px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      transition: 0.2s ease;
+    }
+
+    .botao:hover {
+      background: var(--primary-hover);
+    }
+
+    .botao-secundario {
+      background: var(--dark);
+    }
+
+    .botao-secundario:hover {
+      background: var(--dark-hover);
+    }
+
+    .botao-perigo {
+      background: var(--danger);
+    }
+
+    .botao-perigo:hover {
+      background: var(--danger-hover);
+    }
+
+    .area-cliente,
+    .area-dev {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .lista-apps {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .card h3 {
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--muted);
+    }
+
+    .versao {
+      font-size: 13px;
+      color: var(--primary);
+      font-weight: bold;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .arquivo-info {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 6px;
+      word-break: break-word;
+    }
+
+    .linha-botoes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .topo-painel {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .erro {
+      color: var(--danger);
+      font-size: 13px;
+      margin-top: 8px;
+      min-height: 16px;
+    }
+
+    .vazio {
+      color: #334155;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 14px;
+    }
+
+    .bloco-info {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      font-size: 13px;
+      color: #1e3a8a;
+      line-height: 1.5;
+    }
+
+    code {
+      background: #dbeafe;
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 14px;
+      }
+
+      .grid-login {
+        grid-template-columns: 1fr;
+      }
+
+      .topo h1 {
+        font-size: 26px;
+      }
+
+      .botao {
+        width: 100%;
+        text-align: center;
+      }
+
+      .linha-botoes {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Bem-vindo à Central CIA 🚀</h1>
-  <p>Nosso site já está no ar com sucesso!</p>
+  <div class="container">
+    <header class="topo">
+      <h1>Apk TV Streaming</h1>
+      <p>Área do cliente e painel do desenvolvedor para download de aplicativos.</p>
+    </header>
+
+    <section class="grid-login" id="blocoLogin">
+      <article class="painel">
+        <h2>Área do Cliente</h2>
+        <p>Digite a senha para acessar os downloads.</p>
+        <input type="password" id="clienteSenha" placeholder="Senha do cliente" autocomplete="off" />
+        <button class="botao" onclick="validarCliente()">Entrar como cliente</button>
+        <div id="msgCliente" class="erro" aria-live="polite"></div>
+      </article>
+
+      <article class="painel">
+        <h2>Área do Desenvolvedor</h2>
+        <p>Digite a senha para acessar o painel técnico.</p>
+        <input type="password" id="devSenha" placeholder="Senha do desenvolvedor" autocomplete="off" />
+        <button class="botao botao-secundario" onclick="validarDev()">Entrar como dev</button>
+        <div id="msgDev" class="erro" aria-live="polite"></div>
+      </article>
+    </section>
+
+    <section class="painel area-cliente" id="areaCliente">
+      <div class="topo-painel">
+        <div>
+          <h2>Área de Download (Cliente)</h2>
+          <p>Aplicativos disponíveis para download.</p>
+        </div>
+        <button class="botao botao-perigo" onclick="sairCliente()">Sair</button>
+      </div>
+      <div class="lista-apps" id="listaAppsCliente"></div>
+    </section>
+
+    <section class="painel area-dev" id="areaDev">
+      <div class="topo-painel">
+        <div>
+          <h2>Painel do Desenvolvedor</h2>
+          <p>A lista abaixo usa a mesma base de apps do cliente (em memória, sem upload local).</p>
+        </div>
+        <button class="botao botao-perigo" onclick="sairDev()">Sair</button>
+      </div>
+
+      <div class="bloco-info">
+        Para editar os apps de forma fixa no GitHub Pages, altere o bloco JavaScript
+        <code>LISTA DE APPS PARA EDITAR</code> dentro deste arquivo <code>index.html</code>.
+      </div>
+
+      <div class="linha-botoes">
+        <button class="botao botao-perigo" onclick="resetarListaEmMemoria()">Resetar alterações visuais</button>
+      </div>
+
+      <div class="lista-apps" id="listaAppsDev"></div>
+    </section>
+
+    <footer>Apk TV Streaming</footer>
+  </div>
+
+  <script>
+    const SENHA_CLIENTE = '12345';
+    const SENHA_DEV = 'cia2024';
+
+    // ==========================================================
+    // LISTA DE APPS PARA EDITAR
+    // Edite aqui os aplicativos exibidos no site (GitHub Pages):
+    // - nome
+    // - descricao
+    // - versao
+    // - arquivoNome
+    // - linkDownload
+    // ==========================================================
+    const APPS_CONFIG = [
+      {
+        id: 1,
+        nome: 'TV Max Stream',
+        descricao: 'Aplicativo de streaming com canais ao vivo e conteúdo sob demanda.',
+        versao: '2.4.1',
+        arquivoNome: 'tv-max-stream-v2.4.1.apk',
+        linkDownload: 'https://exemplo.com/downloads/tv-max-stream-v2.4.1.apk'
+      },
+      {
+        id: 2,
+        nome: 'Cinema Plus TV',
+        descricao: 'Filmes e séries com interface leve para Smart TV e Android TV.',
+        versao: '1.9.0',
+        arquivoNome: 'cinema-plus-tv-v1.9.0.apk',
+        linkDownload: 'https://exemplo.com/downloads/cinema-plus-tv-v1.9.0.apk'
+      }
+    ];
+
+    const clienteSenhaInput = document.getElementById('clienteSenha');
+    const devSenhaInput = document.getElementById('devSenha');
+
+    // lista em memória para ações visuais no painel dev (não persiste)
+    let appsEmMemoria = APPS_CONFIG.map((app) => ({ ...app }));
+
+    clienteSenhaInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') validarCliente();
+    });
+
+    devSenhaInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') validarDev();
+    });
+
+    function validarCliente() {
+      const senha = clienteSenhaInput.value.trim();
+      const msg = document.getElementById('msgCliente');
+      msg.textContent = '';
+
+      if (senha === SENHA_CLIENTE) {
+        document.getElementById('areaCliente').style.display = 'block';
+        renderizarAppsCliente();
+        clienteSenhaInput.value = '';
+      } else {
+        msg.textContent = 'Senha do cliente incorreta.';
+      }
+    }
+
+    function validarDev() {
+      const senha = devSenhaInput.value.trim();
+      const msg = document.getElementById('msgDev');
+      msg.textContent = '';
+
+      if (senha === SENHA_DEV) {
+        document.getElementById('areaDev').style.display = 'block';
+        renderizarAppsDev();
+        devSenhaInput.value = '';
+      } else {
+        msg.textContent = 'Senha do desenvolvedor incorreta.';
+      }
+    }
+
+    function sairCliente() {
+      document.getElementById('areaCliente').style.display = 'none';
+    }
+
+    function sairDev() {
+      document.getElementById('areaDev').style.display = 'none';
+    }
+
+    function resetarListaEmMemoria() {
+      appsEmMemoria = APPS_CONFIG.map((app) => ({ ...app }));
+      renderizarAppsCliente();
+      renderizarAppsDev();
+    }
+
+    function removerAppEmMemoria(id) {
+      appsEmMemoria = appsEmMemoria.filter((app) => app.id !== id);
+      renderizarAppsCliente();
+      renderizarAppsDev();
+    }
+
+    function cardAppCliente(app) {
+      return `
+        <article class="card">
+          <h3>${app.nome}</h3>
+          <p>${app.descricao}</p>
+          <span class="versao">Versão ${app.versao}</span>
+          <div class="arquivo-info"><strong>Arquivo:</strong> ${app.arquivoNome}</div>
+          <div class="linha-botoes">
+            <a class="botao" href="${app.linkDownload}" target="_blank" rel="noopener noreferrer" download="${app.arquivoNome}">Baixar APK</a>
+          </div>
+        </article>
+      `;
+    }
+
+    function cardAppDev(app) {
+      return `
+        <article class="card">
+          <h3>${app.nome}</h3>
+          <p>${app.descricao}</p>
+          <span class="versao">Versão ${app.versao}</span>
+          <div class="arquivo-info"><strong>Arquivo:</strong> ${app.arquivoNome}</div>
+          <div class="arquivo-info"><strong>Link:</strong> ${app.linkDownload}</div>
+          <div class="linha-botoes">
+            <button class="botao botao-perigo" onclick="removerAppEmMemoria(${app.id})">Remover visualmente</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderizarAppsCliente() {
+      const lista = document.getElementById('listaAppsCliente');
+
+      if (appsEmMemoria.length === 0) {
+        lista.innerHTML = '<div class="vazio">Nenhum aplicativo disponível no momento.</div>';
+        return;
+      }
+
+      lista.innerHTML = appsEmMemoria.map(cardAppCliente).join('');
+    }
+
+    function renderizarAppsDev() {
+      const lista = document.getElementById('listaAppsDev');
+
+      if (appsEmMemoria.length === 0) {
+        lista.innerHTML = '<div class="vazio">Nenhum app em memória. Use "Resetar alterações visuais" para restaurar a lista fixa.</div>';
+        return;
+      }
+
+      lista.innerHTML = appsEmMemoria.map(cardAppDev).join('');
+    }
+  </script>
 </body>
 </html>
