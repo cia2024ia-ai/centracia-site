@@ -1,29 +1,31 @@
-# CIA – Site one-page (GitHub Pages) – V4 PRO FINAL
+# Apk TV Streaming
 
-Inclui:
-- `index.html` (página principal)
-- `assets/` (logos, favicon, background, OG image)
-- `CNAME` (define domínio customizado centracia.com.br)
-- `README.md` (instruções)
+Projeto estático pronto para publicação no GitHub Pages.
 
-## Publicar no GitHub Pages
-1. Suba todos os arquivos no repositório do GitHub (branch `main`).
-2. Vá em Settings → Pages → Deploy from a branch → main → `/ (root)` → Save.
-3. O GitHub já reconhecerá o domínio customizado a partir do arquivo `CNAME`.
+## Arquivos principais
+- `index.html`: página única com:
+  - login da área do cliente (senha `12345`)
+  - login da área do desenvolvedor (senha `cia2024`)
+  - lista fixa de apps editável no bloco `LISTA DE APPS PARA EDITAR`
+- `CNAME`: domínio customizado já configurado (opcional para uso no seu repositório)
 
-## Configuração de DNS para centracia.com.br
-No provedor de domínio (ex.: Registro.br), configure:
+## Publicação rápida no GitHub Pages
+1. Envie os arquivos para a branch `main` do seu repositório.
+2. No GitHub, acesse **Settings → Pages**.
+3. Em **Build and deployment**, escolha **Deploy from a branch**.
+4. Selecione **Branch: main** e pasta **/(root)**.
+5. Salve e aguarde o link do GitHub Pages ficar disponível.
 
-- **CNAME**
-  - Nome: `www`
-  - Valor: `SEU_USUARIO.github.io`
+## Como editar os apps
+Abra `index.html` e edite o bloco JavaScript com o título:
 
-- **A records** (para o domínio raiz funcionar sem www):
-  - 185.199.108.153
-  - 185.199.109.153
-  - 185.199.110.153
-  - 185.199.111.153
+`LISTA DE APPS PARA EDITAR`
 
-Após salvar, aguarde até 30 minutos para propagação do DNS.
+Cada item possui:
+- `nome`
+- `descricao`
+- `versao`
+- `arquivoNome`
+- `linkDownload`
 
-Acesse: https://centracia.com.br
+Depois de editar, faça commit e push para publicar a atualização.
